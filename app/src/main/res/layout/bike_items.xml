@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="21dp"
+        android:id="@+id/bikename"
+        android:textStyle="normal|bold"
+        android:text="Bike name: " />
+
+    <TextView
+        android:text="Make: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bikename"
+        android:layout_alignStart="@+id/bikename"
+        android:id="@+id/make" />
+
+    <TextView
+        android:text="Frame number: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/model"
+        android:layout_alignStart="@+id/model"
+        android:id="@+id/frameno" />
+
+    <TextView
+        android:text="Model: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/model"
+        android:layout_below="@+id/make"
+        android:layout_alignStart="@+id/make" />
+
+    <ImageView
+        android:layout_height="100dp"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:text="Description: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@+id/frameno"
+        android:layout_alignStart="@+id/frameno"
+        android:layout_toStartOf="@+id/imageView"
+        android:layout_alignEnd="@+id/frameno" />
+
+</RelativeLayout>
