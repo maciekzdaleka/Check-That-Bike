@@ -1,12 +1,16 @@
 package com.example.maciek.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +24,10 @@ import java.sql.SQLException;
 
 public class Bike_Details extends AppCompatActivity {
 
-    Button back, delete;
+    Button back, delete, stolen;
     TextView b_name, b_make, b_model, b_frame, b_des;
     ImageView b_image;
-    String username;
+    String username, des_text;
     int id;
 
     @Override
@@ -40,6 +44,7 @@ public class Bike_Details extends AppCompatActivity {
 
         back = (Button) findViewById(R.id.back);
         delete = (Button) findViewById(R.id.delete);
+        stolen = (Button) findViewById(R.id.mark_stolen);
         b_name = (TextView) findViewById(R.id.bike_name);
         b_make = (TextView) findViewById(R.id.bike_make);
         b_model = (TextView) findViewById(R.id.bike_model);
@@ -47,7 +52,6 @@ public class Bike_Details extends AppCompatActivity {
         b_des = (TextView) findViewById(R.id.description);
         b_image = (ImageView) findViewById(R.id.imageView2);
 
-        Toast.makeText(getBaseContext(), "username + id" + id + " "+ username, Toast.LENGTH_LONG).show();
 
         new Thread(new Runnable(){
 
@@ -166,6 +170,79 @@ public class Bike_Details extends AppCompatActivity {
                 }
 
             }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Theft Description");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                des_text = input.getText().toString();
+                Intent k = new Intent(Bike_Details.this, View_My_Bikes.class);
+                k.putExtra("Name", username.toString());
+                new Thread(new Runnable(){
+
+                    public void run()
+                    {
+                        mark_stolen();
+                    }
+
+                }).start();
+                startActivity(k);
+                finish();
+            }
+            protected void mark_stolen() {
+
+                try
+                {
+                    PreparedStatement st = null;
+                    Class.forName("com.mysql.jdbc.Driver");
+                    String url = "jdbc:mysql://178.62.50.210:3306/bikes";
+                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
+                    String sql = "update user_bikes set stolen=?, theft_place=? where username=? and bike_id=?";
+                    st = c.prepareStatement(sql);
+                    st.setString(1,"yes");
+                    st.setString(2,des_text);
+                    st.setString(3, username);
+                    st.setInt(4, id);
+                    st.execute();
+
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getBaseContext(), "Bike deleted !", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    st.close();
+                    c.close();
+                }
+                catch (ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        stolen.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                builder.show();
+
+            }
+
         });
 
 

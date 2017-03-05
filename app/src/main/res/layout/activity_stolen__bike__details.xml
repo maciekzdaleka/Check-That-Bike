@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.maciek.myapplication.Bike_Details">
+    tools:context="com.example.maciek.myapplication.Stolen_Bike_Details">
 
     <TextView
         android:text="TextView"
@@ -59,37 +59,23 @@
         android:layout_marginTop="17dp"
         android:id="@+id/description" />
 
-    <Button
-        android:text="Back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/back" />
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:srcCompat="@android:drawable/ic_menu_report_image"
         android:id="@+id/imageView2"
-        android:layout_marginBottom="14dp"
-        android:layout_above="@+id/back"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="37dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="Delete"
+    <TextView
+        android:text="Theft Location: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/back"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/delete"
-        android:background="@android:color/holo_red_dark" />
+        android:id="@+id/t_description"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/description"
+        android:layout_alignStart="@+id/description" />
 
-    <Button
-        android:text="Mark Stolen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/mark_stolen" />
 </RelativeLayout>

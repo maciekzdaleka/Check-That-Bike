@@ -11,7 +11,8 @@
         android:layout_marginStart="21dp"
         android:id="@+id/bikename"
         android:textStyle="normal|bold"
-        android:text="Bike name: " />
+        android:text="Bike name: "
+        android:layout_toStartOf="@+id/imageView" />
 
     <TextView
         android:text="Make: "
@@ -49,7 +50,6 @@
         android:scaleType="fitXY"/>
 
     <TextView
-        android:text="Description: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/description"
