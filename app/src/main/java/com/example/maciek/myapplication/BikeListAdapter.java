@@ -30,6 +30,7 @@ public class BikeListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+
         return bikelist.size();
     }
 

@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -22,12 +23,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Check_Adverts extends AppCompatActivity  {
+public class Check_Adverts extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    String username;
+    String username, bike_type2;
     EditText search_f;
     Button search_button;
+    Spinner spinner;
+    static ArrayList<String> bikes_links = new ArrayList<String>();
 
     ListView listView;
     ArrayList<Bike> list;
@@ -48,12 +52,31 @@ public class Check_Adverts extends AppCompatActivity  {
         }
         search_f = (EditText) findViewById(R.id.search_field);
         search_button = (Button) findViewById(R.id.search);
-
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
         listView = (ListView) findViewById(R.id.listview3);
         list = new ArrayList<>();
         adapter = new BikeListAdapter(this,R.layout.bike_items,list);
         listView.setAdapter(adapter);
-        //listView.setOnItemClickListener(this);
+
+        List<String> bike_type = new ArrayList<String>();
+        bike_type.add("Select Bike Type");
+        bike_type.add("Mountain Bike");
+        bike_type.add("BMX");
+        bike_type.add("Electric & Folding");
+        bike_type.add("Fixies & Singlespeed");
+        bike_type.add("Hybrid");
+        bike_type.add("Kids");
+        bike_type.add("Ladies");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, bike_type);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
 
 
         search_button.setOnClickListener(new View.OnClickListener(){
@@ -68,13 +91,25 @@ public class Check_Adverts extends AppCompatActivity  {
                     {
                         try
                         {
+                            String unknown = "unknown";
                             PreparedStatement st = null;
                             Class.forName("com.mysql.jdbc.Driver");
                             String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                             Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                            String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ?;";
-                            st = c.prepareStatement(sql);
-                            st.setString(1, "%" + search_text  + "%");
+                            if(bike_type2.equals("normal"))
+                            {
+                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? ;";
+                                st = c.prepareStatement(sql);
+                                st.setString(1, "%" + search_text  + "%");
+                            }
+                            else
+                            {
+                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or bike_type ?;";
+                                st = c.prepareStatement(sql);
+                                st.setString(1, "%" + search_text  + "%");
+                                st.setString(2, "%" + bike_type2  + "%");
+                                st.setString(3, "%" + unknown  + "%");
+                            }
                             ResultSet rs = st.executeQuery();
 
 
@@ -83,7 +118,9 @@ public class Check_Adverts extends AppCompatActivity  {
                                 int id = rs.getInt("bike_id");
                                 String title = rs.getString("title");
                                 URL image_link = rs.getURL("image_link");
-                                String advert_link = rs.getString("advert_link");
+                                bikes_links.add(rs.getString("advert_link"));
+                                //String advert_link = rs.getString("advert_link");
+                                String advert_link = (" ");
                                 String biketype = rs.getString("bike_type");
                                 String imagee = " ";
                                 String des = " ";
@@ -93,7 +130,6 @@ public class Check_Adverts extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     adapter.notifyDataSetChanged();
-                                    Toast.makeText(getBaseContext(), "Searching for: "  + search_text , Toast.LENGTH_LONG).show();
                                 }
                             });
                             st.close();
@@ -114,13 +150,12 @@ public class Check_Adverts extends AppCompatActivity  {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent k = new Intent(Check_Adverts.this, view_advert.class);
-                // k.putExtra("Name", username.toString());
-                //startActivity(k);
-                // finish();
                 int itemId = (int) id;
-                String selectedFromList = (listView.getItemAtPosition(position).toString());
-                Toast.makeText(getBaseContext(),  itemId + " " + selectedFromList, Toast.LENGTH_LONG).show();
+                Intent k = new Intent(Check_Adverts.this, view_advert.class);
+                k.putExtra("Name", username.toString());
+                k.putExtra("Bike_AD",(bikes_links.get(itemId)));
+                startActivity(k);
+                finish();
             }
 
         });
@@ -157,5 +192,24 @@ public class Check_Adverts extends AppCompatActivity  {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        if(item.equals("Select Bike Type"))
+        {
+            bike_type2 = "normal";
+        }
+        else
+        {
+            bike_type2 = parent.getItemAtPosition(position).toString();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        bike_type2 = "normal";
     }
 }

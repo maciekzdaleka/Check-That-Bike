@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/bikename"
         android:layout_alignStart="@+id/bikename"
-        android:id="@+id/make" />
+        android:id="@+id/make"
+        android:layout_toStartOf="@+id/imageView" />
 
     <TextView
         android:text="Frame number: "
@@ -28,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/model"
         android:layout_alignStart="@+id/model"
-        android:id="@+id/frameno" />
+        android:id="@+id/frameno"
+        android:layout_toStartOf="@+id/imageView" />
 
     <TextView
         android:text="Model: "
@@ -36,7 +38,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/model"
         android:layout_below="@+id/make"
-        android:layout_alignStart="@+id/make" />
+        android:layout_alignStart="@+id/make"
+        android:layout_toStartOf="@+id/imageView" />
 
     <ImageView
         android:layout_height="100dp"
