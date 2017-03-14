@@ -125,7 +125,7 @@ public class Register extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             public void run() {
 
-                                Toast.makeText(getBaseContext(), "User already exist! " + u, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), "User already existt! " + u, Toast.LENGTH_LONG).show();
                             }
                         });
                     }
