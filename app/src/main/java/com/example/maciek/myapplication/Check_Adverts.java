@@ -35,7 +35,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
 
     ListView listView;
     ArrayList<Bike> list;
-    BikeListAdapter adapter = null;
+    static BikeListAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
             {
                 String search_text = search_f.getText().toString();
                 list.clear();
+                bikes_links.clear();
                 new Thread(new Runnable(){
 
                     public void run()
@@ -104,11 +105,12 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                             }
                             else
                             {
-                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or bike_type ?;";
+                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ? ;";
                                 st = c.prepareStatement(sql);
                                 st.setString(1, "%" + search_text  + "%");
                                 st.setString(2, "%" + bike_type2  + "%");
-                                st.setString(3, "%" + unknown  + "%");
+                                st.setString(3, "%" + search_text  + "%");
+                                st.setString(4, "%" + unknown + "%");
                             }
                             ResultSet rs = st.executeQuery();
 
@@ -162,6 +164,9 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
 
 
     }
+
+
+
     private byte[] downloadUrl(URL toDownload) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 

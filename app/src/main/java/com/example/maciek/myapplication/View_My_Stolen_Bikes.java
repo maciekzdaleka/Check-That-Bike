@@ -24,9 +24,14 @@ import java.util.ArrayList;
 
 public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    String username;
     Integer id2;
+    String username,model,make,bike_type;
+    byte [] bikeimagebyte;
     static ArrayList<Integer> bikesId = new ArrayList<Integer>();
+    static ArrayList<String> bikesmodel = new ArrayList<String>();
+    static ArrayList<String> bikesmake = new ArrayList<String>();
+    static ArrayList<String> bikestype= new ArrayList<String>();
+    static ArrayList<byte []> bikesimage= new ArrayList<byte []>();
     ListView listView;
     ArrayList<Bike> list;
     BikeListAdapter adapter = null;
@@ -35,10 +40,13 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view__my__stolen__bikes);
-
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-
+        bikesId.clear();
+        bikesmodel.clear();
+        bikesmake.clear();
+        bikestype.clear();
+        bikesimage.clear();
         if(bundle != null)
         {
             username = bundle.getString("Name");
@@ -60,7 +68,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, bike_name, make, image, model, frame_no, description from user_bikes where username=? and stolen=?";
+                    String sql = "select bike_id, bike_name, make, image, model, frame_no, bike_type from user_bikes where username=? and stolen=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, username);
                     st.setString(2, "yes");
@@ -70,15 +78,19 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     while(rs.next())
                     {
                         int id = rs.getInt("bike_id");
-                        bikesId.add(rs.getInt("bike_id"));
                         String name = rs.getString("bike_name");
                         String make = rs.getString("make");
                         Blob blob = rs.getBlob("image");
                         String model = rs.getString("model");
                         String frame = rs.getString("frame_no");
-                        String des = rs.getString("description");
+                        String des = rs.getString("bike_type");
                         int blobLength = (int) blob.length();
                         byte[] image = blob.getBytes(1, blobLength);
+                        bikesimage.add(image);
+                        bikesmodel.add(rs.getString("model"));
+                        bikesmake.add(rs.getString("make"));
+                        bikestype.add(rs.getString("bike_type"));
+                        bikesId.add(rs.getInt("bike_id"));
                         blob.free();
                         list.add(new Bike(id, name, make, model, frame, des, image));
                     }
@@ -112,14 +124,14 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
 
                     public void run()
                     {
-                        mark_stolen();
+                        delete_bike();
                     }
 
                 }).start();
                 startActivity(k);
                 finish();
             }
-            protected void mark_stolen() {
+            protected void delete_bike() {
 
                 try
                 {
@@ -151,23 +163,43 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
 
             }
         });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
+
+        builder.setNeutralButton("Search Advertisements", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent k = new Intent(View_My_Stolen_Bikes.this, Stolen_bike_add_checker.class);
+                k.putExtra("Name", username);
+                k.putExtra("bike_make", make);
+                k.putExtra("bike_model", model);
+                k.putExtra("bike_type", bike_type);
+                //.putExtra("bike_image", bikeimagebyte);
+                startActivity(k);
+                finish();
+            }
+
+        });
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             int itemId = (int) id;
             id2 =  bikesId.get(itemId);
-            Toast.makeText(getBaseContext(), "username + id"  + username + "  " + id2, Toast.LENGTH_LONG).show();
+            make = bikesmake.get(itemId);
+            model = bikesmodel.get(itemId);
+            bike_type = bikestype.get(itemId);
+            bikeimagebyte = bikesimage.get(itemId);
             builder.show();
             return true;
         }
         });
-
     }
 
 
@@ -187,7 +219,6 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent k = new Intent(View_My_Stolen_Bikes.this, Stolen_Bike_Details.class);
         int itemId = (int) id;
-        //Toast.makeText(getBaseContext(), "username + id" + id2 + username, Toast.LENGTH_LONG).show();
         System.out.println(id2 + username);
         k.putExtra("Name", username.toString());
         k.putExtra("Bike_id",(bikesId.get(itemId)));

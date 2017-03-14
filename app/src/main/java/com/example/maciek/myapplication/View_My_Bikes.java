@@ -37,7 +37,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view__my__bikes);
-
+        bikesId.clear();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if(bundle != null)
@@ -65,7 +65,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, bike_name, make, image, model, frame_no, description from user_bikes where username=? and stolen=?";
+                    String sql = "select bike_id, bike_name, make, image, model, frame_no, bike_type from user_bikes where username=? and stolen=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, username);
                     st.setString(2, "no");
@@ -81,7 +81,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                         Blob blob = rs.getBlob("image");
                         String model = rs.getString("model");
                         String frame = rs.getString("frame_no");
-                        String des = rs.getString("description");
+                        String des = rs.getString("bike_type");
                         int blobLength = (int) blob.length();
                         byte[] image = blob.getBytes(1, blobLength);
                         blob.free();

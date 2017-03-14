@@ -79,7 +79,7 @@ public class BikeListAdapter extends BaseAdapter {
         holder.bike_make.setText(bike.getMake());
         holder.bike_model.setText(bike.getModel());
         holder.bike_frame.setText(bike.getFrame_no());
-        //holder.bike_des.setText(bike.getDesc());
+        holder.bike_des.setText(bike.getDesc());
 
         byte [] bikeImage = bike.getImage();
         Bitmap bitmap = BitmapFactory.decodeByteArray(bikeImage,0,bikeImage.length);

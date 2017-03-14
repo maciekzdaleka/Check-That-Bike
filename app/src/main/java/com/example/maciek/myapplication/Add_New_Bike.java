@@ -1,40 +1,70 @@
 package com.example.maciek.myapplication;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Add_New_Bike extends AppCompatActivity {
 
 
-    String username;
+public class Add_New_Bike extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+
+    String username, bike_type2;
     EditText bike_name, bike_make, bike_model, bike_number, bike_des;
     Button add_image, back, add_bike;
     ImageView imageView;
+    Spinner spinner;
+    File userbike;
+    Uri currImageURI;
+    private ProgressBar spin;
 
+    private static final String API_KEY = "NBG84pCQp7EYgTe_4ML9Jg";
+
+    static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+    static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
     final int REQUEST_CODE_GALLERY = 999;
 
@@ -61,6 +91,31 @@ public class Add_New_Bike extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.bikeimage);
 
+        spinner = (Spinner) findViewById(R.id.spinner2);
+        spinner.setOnItemSelectedListener(this);
+
+        spin=(ProgressBar)findViewById(R.id.progressBar);
+        spin.setVisibility(View.GONE);
+
+        List<String> bike_type = new ArrayList<String>();
+        bike_type.add("Select Bike Type");
+        bike_type.add("Mountain Bike");
+        bike_type.add("BMX");
+        bike_type.add("Electric & Folding");
+        bike_type.add("Fixies & Singlespeed");
+        bike_type.add("Hybrid");
+        bike_type.add("Kids");
+        bike_type.add("Ladies");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, bike_type);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+
 
         back.setOnClickListener(new View.OnClickListener() {
 
@@ -86,6 +141,9 @@ public class Add_New_Bike extends AppCompatActivity {
         add_bike.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                spin.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 new Thread(new Runnable() {
 
                     public void run() {
@@ -93,6 +151,10 @@ public class Add_New_Bike extends AppCompatActivity {
                     }
 
                 }).start();
+
+
+
+
             }
 
             protected void insert() {
@@ -111,7 +173,7 @@ public class Add_New_Bike extends AppCompatActivity {
                     Connection c = DriverManager.getConnection(url, "maciek", "maciek93");
 
 
-                    String inss = "insert into user_bikes values (NULL,?,?,?,?,?,?,?,?,?,NULL)";
+                    String inss = "insert into user_bikes values (NULL,?,?,?,?,?,?,?,?,?,NULL,?)";
                     st2 = c.prepareStatement(inss);
                     st2.setString(1, name);
                     st2.setString(2, user);
@@ -122,19 +184,23 @@ public class Add_New_Bike extends AppCompatActivity {
                     st2.setString(7, des);
                     st2.setString(8, "no");
                     st2.setString(9, " ");
+                    st2.setString(10,bike_type2);
                     st2.execute();
                     st2.close();
 
 
                     runOnUiThread(new Runnable() {
                         public void run() {
+                            spin.setVisibility(View.GONE);
                             bike_name.setText("");
                             bike_make.setText("");
                             bike_model.setText("");
                             bike_number.setText("");
                             bike_des.setText("");
                             imageView.setImageResource(android.R.drawable.ic_menu_report_image);
+                            spinner.setSelection(0);
                             Toast.makeText(getBaseContext(), "Bike has been added to the database! ", Toast.LENGTH_LONG).show();
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
                     });
 
@@ -185,9 +251,60 @@ public class Add_New_Bike extends AppCompatActivity {
 
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
-
+                userbike = new File(getPath(uri));
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(bitmap);
+                spin.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try  {
+
+                            CSApi api = new CSApi(
+                                    HTTP_TRANSPORT,
+                                    JSON_FACTORY,
+                                    API_KEY
+                            );
+                            CSPostConfig imageToPost = CSPostConfig.newBuilder()
+                                    .withImage(userbike)
+                                    .build();
+
+                            CSPostResult portResult = null;
+
+                            portResult = api.postImage(imageToPost);
+
+                            Thread.sleep(30000);
+
+                            CSGetResult scoredResult = null;
+
+                            scoredResult = api.getImage(portResult);
+                            String z = scoredResult.toString();
+
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(z);
+                                        spin.setVisibility(View.GONE);
+                                        String bikedes = jsonObject.getString("name");
+                                        Toast.makeText(getBaseContext(), bikedes, Toast.LENGTH_LONG).show();
+                                        bike_des.setText(bikedes);
+                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -195,6 +312,17 @@ public class Add_New_Bike extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    public String getPath(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) return null;
+        int column_index =             cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String s=cursor.getString(column_index);
+        cursor.close();
+        return s;
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -206,6 +334,24 @@ public class Add_New_Bike extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        if(item.equals("Select Bike Type"))
+        {
+            bike_type2 = "unknown";
+        }
+        else
+        {
+            bike_type2 = parent.getItemAtPosition(position).toString();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        bike_type2 = "unknown";
     }
 
 

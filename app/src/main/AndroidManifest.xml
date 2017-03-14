@@ -34,7 +34,8 @@
         <activity android:name=".View_My_Stolen_Bikes" />
         <activity android:name=".Stolen_Bike_Details" />
         <activity android:name=".Check_Adverts" />
-        <activity android:name=".view_advert"></activity>
+        <activity android:name=".view_advert" />
+        <activity android:name=".Stolen_bike_add_checker"></activity>
     </application>
 
 </manifest>

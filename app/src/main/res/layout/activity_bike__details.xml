@@ -50,15 +50,6 @@
         android:layout_marginTop="16dp"
         android:id="@+id/bike_frame" />
 
-    <TextView
-        android:text="Description: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bike_frame"
-        android:layout_alignStart="@+id/bike_frame"
-        android:layout_marginTop="17dp"
-        android:id="@+id/description" />
-
     <Button
         android:text="Back"
         android:layout_width="wrap_content"
@@ -92,4 +83,22 @@
         android:layout_below="@+id/imageView2"
         android:layout_alignParentEnd="true"
         android:id="@+id/mark_stolen" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:id="@+id/stolen_bike_type"
+        android:text="Bike type"
+        android:layout_below="@+id/bike_frame"
+        android:layout_alignStart="@+id/bike_frame" />
+
+    <TextView
+        android:text="Description: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@+id/stolen_bike_type"
+        android:layout_alignStart="@+id/stolen_bike_type"
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

@@ -61,16 +61,6 @@
         android:layout_below="@+id/frame_no"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:layout_width="133dp"
-        android:layout_height="115dp"
-        app:srcCompat="@android:drawable/ic_menu_report_image"
-        android:id="@+id/bikeimage"
-        android:adjustViewBounds="false"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/description"
-        android:layout_alignParentStart="true" />
-
     <Button
         android:text="addimage"
         android:layout_width="wrap_content"
@@ -95,5 +85,30 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/addbike" />
+
+    <ImageView
+        android:layout_width="133dp"
+        android:layout_height="115dp"
+        app:srcCompat="@android:drawable/ic_menu_report_image"
+        android:id="@+id/bikeimage"
+        android:adjustViewBounds="false"
+        android:layout_above="@+id/back"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="64dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_alignParentStart="true"
+        android:id="@+id/spinner2" />
+
+    <ProgressBar
+        style="@android:style/Widget.Material.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bikeimage"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar" />
 
 </RelativeLayout>

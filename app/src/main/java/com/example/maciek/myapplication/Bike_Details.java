@@ -25,7 +25,7 @@ import java.sql.SQLException;
 public class Bike_Details extends AppCompatActivity {
 
     Button back, delete, stolen;
-    TextView b_name, b_make, b_model, b_frame, b_des;
+    TextView b_name, b_make, b_model, b_frame, b_des, b_type;
     ImageView b_image;
     String username, des_text;
     int id;
@@ -50,6 +50,7 @@ public class Bike_Details extends AppCompatActivity {
         b_model = (TextView) findViewById(R.id.bike_model);
         b_frame = (TextView) findViewById(R.id.bike_frame);
         b_des = (TextView) findViewById(R.id.description);
+        b_type = (TextView) findViewById(R.id.stolen_bike_type);
         b_image = (ImageView) findViewById(R.id.imageView2);
 
 
@@ -63,7 +64,7 @@ public class Bike_Details extends AppCompatActivity {
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, bike_name, make, image, model, frame_no, description from user_bikes where username=? and bike_id=?";
+                    String sql = "select bike_id, bike_name, make, image, model, frame_no, description , bike_type from user_bikes where username=? and bike_id=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, username);
                     st.setInt(2, id);
@@ -79,6 +80,7 @@ public class Bike_Details extends AppCompatActivity {
                         String model = rs.getString("model");
                         String frame = rs.getString("frame_no");
                         String des = rs.getString("description");
+                        String type = rs.getString("bike_type");
                         int blobLength = (int) blob.length();
                         byte[] image = blob.getBytes(1, blobLength);
                         blob.free();
@@ -90,6 +92,7 @@ public class Bike_Details extends AppCompatActivity {
                                 b_model.setText("Model: " + model);
                                 b_frame.setText("Frame Number: " + frame);
                                 b_des.setText("Description: " + des);
+                                b_type.setText("Bike Type: "+type);
                                 byte [] bikeImage = image;
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bikeImage,0,bikeImage.length);
                                 b_image.setImageBitmap(bitmap);
