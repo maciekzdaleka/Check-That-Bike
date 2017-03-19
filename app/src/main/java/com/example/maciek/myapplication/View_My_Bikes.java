@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.sql.Blob;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    String username,des_text;
+    String username,des_text,t_date;
     Integer id2;
     Button addbike ;
     static ArrayList<Integer> bikesId = new ArrayList<Integer>();
@@ -32,6 +33,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
     ListView listView;
     ArrayList<Bike> list;
     BikeListAdapter adapter = null;
+    private ProgressBar spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
         adapter = new BikeListAdapter(this,R.layout.bike_items,list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        spin=(ProgressBar)findViewById(R.id.progressBar2);
+        spin.setVisibility(View.VISIBLE);
 
                 new Thread(new Runnable(){
 
@@ -90,6 +94,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                     runOnUiThread(new Runnable() {
                         public void run() {
                     adapter.notifyDataSetChanged();
+                            spin.setVisibility(View.GONE);
                         }
                     });
                     st.close();
@@ -118,16 +123,21 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
         });
 
         AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-        builder2.setTitle("Theft Description");
+        builder2.setTitle("Where did it happen ?");
         final EditText input2 = new EditText(this);
         input2.setInputType(InputType.TYPE_CLASS_TEXT );
         builder2.setView(input2);
 
+        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+        builder3.setTitle("Theft Date?");
+        final EditText input3 = new EditText(this);
+        input3.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder3.setView(input3);
 
-        builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder3.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                des_text = input2.getText().toString();
+                t_date = input3.getText().toString();
                 Intent k = new Intent(View_My_Bikes.this, View_My_Bikes.class);
                 k.putExtra("Name", username.toString());
                 new Thread(new Runnable(){
@@ -149,17 +159,18 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "update user_bikes set stolen=?, theft_place=? where username=? and bike_id=?";
+                    String sql = "update user_bikes set stolen=?, theft_place=? , theft_date=? where username=? and bike_id=?";
                     st = c.prepareStatement(sql);
                     st.setString(1,"yes");
                     st.setString(2,des_text);
-                    st.setString(3, username);
-                    st.setInt(4, id2);
+                    st.setString(3,t_date);
+                    st.setString(4, username);
+                    st.setInt(5, id2);
                     st.execute();
 
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            Toast.makeText(getBaseContext(), "Bike marked as stolen !", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "Bike marked as stolen !" + des_text + " | " + t_date + " | " + username + " | " + id2, Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -175,6 +186,22 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
 
             }
 
+
+        });
+        builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                des_text = input2.getText().toString();
+                builder3.show();
+
+            }
 
         });
         builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

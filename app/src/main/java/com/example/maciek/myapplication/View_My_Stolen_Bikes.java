@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.sql.Blob;
@@ -35,6 +36,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
     ListView listView;
     ArrayList<Bike> list;
     BikeListAdapter adapter = null;
+    private ProgressBar spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
         adapter = new BikeListAdapter(this,R.layout.bike_items,list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        spin=(ProgressBar)findViewById(R.id.progressBar4);
+        spin.setVisibility(View.VISIBLE);
 
         new Thread(new Runnable(){
 
@@ -97,6 +101,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     runOnUiThread(new Runnable() {
                         public void run() {
                             adapter.notifyDataSetChanged();
+                            spin.setVisibility(View.GONE);
                         }
                     });
                     st.close();

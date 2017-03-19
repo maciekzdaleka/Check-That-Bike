@@ -137,6 +137,9 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                 int itemId = (int) id;
                 Intent k = new Intent(Stolen_bike_add_checker.this, view_advert.class);
                 k.putExtra("Name", username.toString());
+                k.putExtra("bike_make", make);
+                k.putExtra("bike_model", model);
+                k.putExtra("bike_type", bike_type);
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
                 startActivity(k);
                 finish();
