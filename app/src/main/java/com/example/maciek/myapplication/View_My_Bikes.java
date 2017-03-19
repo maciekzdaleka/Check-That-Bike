@@ -122,98 +122,6 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-        builder2.setTitle("Where did it happen ?");
-        final EditText input2 = new EditText(this);
-        input2.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder2.setView(input2);
-
-        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
-        builder3.setTitle("Theft Date?");
-        final EditText input3 = new EditText(this);
-        input3.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder3.setView(input3);
-
-        builder3.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                t_date = input3.getText().toString();
-                Intent k = new Intent(View_My_Bikes.this, View_My_Bikes.class);
-                k.putExtra("Name", username.toString());
-                new Thread(new Runnable(){
-
-                    public void run()
-                    {
-                        mark_stolen();
-                    }
-
-                }).start();
-                startActivity(k);
-                finish();
-            }
-            protected void mark_stolen() {
-
-                try
-                {
-                    PreparedStatement st = null;
-                    Class.forName("com.mysql.jdbc.Driver");
-                    String url = "jdbc:mysql://178.62.50.210:3306/bikes";
-                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "update user_bikes set stolen=?, theft_place=? , theft_date=? where username=? and bike_id=?";
-                    st = c.prepareStatement(sql);
-                    st.setString(1,"yes");
-                    st.setString(2,des_text);
-                    st.setString(3,t_date);
-                    st.setString(4, username);
-                    st.setInt(5, id2);
-                    st.execute();
-
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(getBaseContext(), "Bike marked as stolen !" + des_text + " | " + t_date + " | " + username + " | " + id2, Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                    st.close();
-                    c.close();
-                }
-                catch (ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-
-        });
-        builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                des_text = input2.getText().toString();
-                builder3.show();
-
-            }
-
-        });
-        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-
-
-
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -277,8 +185,12 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent k = new Intent(View_My_Bikes.this, Theft_details.class);
+                k.putExtra("Name", username.toString());
+                k.putExtra("id", id2);
+                startActivity(k);
+                finish();
 
-                builder2.show();
             }
         });
 
