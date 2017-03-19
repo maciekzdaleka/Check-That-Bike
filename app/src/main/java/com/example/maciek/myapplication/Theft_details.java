@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 
 public class Theft_details extends AppCompatActivity {
 
 
     String username,bike_id;
-
+    static EditText DateEdit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,15 @@ public class Theft_details extends AppCompatActivity {
             username = bundle.getString("Name");
             bike_id = bundle.getString("id");
         }
+        DateEdit = (EditText) findViewById(R.id.editText1);
+        DateEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //showTruitonTimePickerDialog(v);
+                //showTruitonDatePickerDialog(v);
+            }
+        });
+
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
