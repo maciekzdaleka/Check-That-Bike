@@ -1,6 +1,7 @@
 package com.example.maciek.myapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,12 +49,10 @@ public class Menu extends AppCompatActivity {
 
             public void onClick (View v)
             {
-                Toast.makeText(getBaseContext(), "Coming soon !", Toast.LENGTH_SHORT).show();
-
-                //Intent k = new Intent(Menu.this, Garda_Stations.class);
-               // k.putExtra("Name", username.toString());
-               // startActivity(k);
-               // finish();
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=garda station");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

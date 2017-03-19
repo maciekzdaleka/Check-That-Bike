@@ -199,7 +199,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemId = (int) id;
                 id2 =  bikesId.get(itemId);
-                Toast.makeText(getBaseContext(), "username + id"  + username + "  " , Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Id: " + id2 , Toast.LENGTH_LONG).show();
                 builder.show();
                 return true;
             }

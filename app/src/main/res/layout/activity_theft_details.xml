@@ -10,20 +10,94 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.maciek.myapplication.Theft_details">
 
+    <ProgressBar
+        android:id="@+id/progressBar5"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
     <TextView
         android:text="Pick the date and time: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_marginTop="30dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
+        android:layout_alignParentStart="true" />
 
     <EditText
+        android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
         android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView"
-        android:id="@+id/editText1" />
+        android:hint="Click Me !"
+        android:inputType="date" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="101dp"
+        android:text="Name:"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address:"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attributions:"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="25dp"
+        android:text="Add Theft Location" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Mark As Stolen" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:maxLength="450"
+        android:inputType="textMultiLine"
+        android:layout_above="@+id/button2"
+        android:layout_toStartOf="@+id/button2"
+        android:layout_marginBottom="62dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Theft Additional details:"
+        android:layout_alignBottom="@+id/editText"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp" />
+
 </RelativeLayout>

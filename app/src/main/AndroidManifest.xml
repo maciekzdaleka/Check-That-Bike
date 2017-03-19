@@ -36,7 +36,15 @@
         <activity android:name=".Check_Adverts" />
         <activity android:name=".view_advert" />
         <activity android:name=".Stolen_bike_add_checker" />
-        <activity android:name=".Theft_details"></activity>
+        <activity android:name=".Theft_details" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDe3i2Hr7YBDrjxgZrTvN2gio_YRQYYxqQ" />
+
     </application>
 
 </manifest>

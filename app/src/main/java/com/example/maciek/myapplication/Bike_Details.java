@@ -175,75 +175,15 @@ public class Bike_Details extends AppCompatActivity {
             }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Theft Description");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                des_text = input.getText().toString();
-                Intent k = new Intent(Bike_Details.this, View_My_Bikes.class);
-                k.putExtra("Name", username.toString());
-                new Thread(new Runnable(){
-
-                    public void run()
-                    {
-                        mark_stolen();
-                    }
-
-                }).start();
-                startActivity(k);
-                finish();
-            }
-            protected void mark_stolen() {
-
-                try
-                {
-                    PreparedStatement st = null;
-                    Class.forName("com.mysql.jdbc.Driver");
-                    String url = "jdbc:mysql://178.62.50.210:3306/bikes";
-                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "update user_bikes set stolen=?, theft_place=? where username=? and bike_id=?";
-                    st = c.prepareStatement(sql);
-                    st.setString(1,"yes");
-                    st.setString(2,des_text);
-                    st.setString(3, username);
-                    st.setInt(4, id);
-                    st.execute();
-
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(getBaseContext(), "Bike deleted !", Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                    st.close();
-                    c.close();
-                }
-                catch (ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
         stolen.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
-                builder.show();
-
+                Intent k = new Intent(Bike_Details.this, Theft_details.class);
+                k.putExtra("Name", username.toString());
+                k.putExtra("id", id);
+                startActivity(k);
+                finish();
             }
 
         });

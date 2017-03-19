@@ -172,7 +172,7 @@ public class Add_New_Bike extends AppCompatActivity implements AdapterView.OnIte
                     Connection c = DriverManager.getConnection(url, "maciek", "maciek93");
 
 
-                    String inss = "insert into user_bikes values (NULL,?,?,?,?,?,?,?,?,?,NULL,?)";
+                    String inss = "insert into user_bikes values (NULL,?,?,?,?,?,?,?,?,?,NULL,NULL,?)";
                     st2 = c.prepareStatement(inss);
                     st2.setString(1, name);
                     st2.setString(2, user);

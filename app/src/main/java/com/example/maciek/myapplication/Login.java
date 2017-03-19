@@ -14,11 +14,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static android.util.JsonToken.NULL;
+
 public class Login extends AppCompatActivity {
 
     Button login, register;
     EditText username , password;
-    String p;
+    static String p,u;
 
 
     @Override
@@ -54,12 +56,13 @@ public class Login extends AppCompatActivity {
                 {
                     String user = username.getText().toString().toLowerCase();
                     String pass= password.getText().toString();
+
                     PreparedStatement st = null;
 
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select password from user where username=?";
+                    String sql = "select password , username from user where username=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, user);
                     ResultSet rs = st.executeQuery();
@@ -68,36 +71,44 @@ public class Login extends AppCompatActivity {
                     while(rs.next())
                     {
                         p = rs.getString("password");
+                        u = rs.getString("username").toLowerCase();
+                    }
 
-                    }
-                    if(p == null)
+                    if(u != null && user.equals(u))
                     {
-                        p = "gtgtgtgtgtgtgtg";
+                        if(p  != null && pass.equals(p))
+                        {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+
+                                    Toast.makeText(getBaseContext(), " User "+ user + " logged in ! ", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Intent k = new Intent(Login.this, Menu.class);
+                            k.putExtra("Name", username.getText().toString());
+                            startActivity(k);
+                            finish();
+
+                        }
+                        else
+                        {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+
+                                    Toast.makeText(getBaseContext(), "Password doesn't match ! " , Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }
-                    if(p.equals(pass))
+                    else
                     {
                         runOnUiThread(new Runnable() {
                             public void run() {
 
-                                Toast.makeText(getBaseContext(), " User "+ user + " logged in ! ", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Intent k = new Intent(Login.this, Menu.class);
-                        k.putExtra("Name", username.getText().toString());
-                        startActivity(k);
-                        finish();
-
-                    }
-                    else if(p != null && !p.equals(pass) && pass == " ")
-                    {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-
-                                Toast.makeText(getBaseContext(), "Password doesnt match " , Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), " User: "+ user + " Doesn't Exist ! ", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-
                     st.close();
                     c.close();
                 }
