@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
     ListView listView;
     ArrayList<Bike> list;
     static BikeListAdapter adapter = null;
+    private ProgressBar spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
         list = new ArrayList<>();
         adapter = new BikeListAdapter(this,R.layout.bike_items,list);
         listView.setAdapter(adapter);
+        spin=(ProgressBar)findViewById(R.id.progressBar6);
+        spin.setVisibility(View.GONE);
 
         List<String> bike_type = new ArrayList<String>();
         bike_type.add("Select Bike Type");
@@ -83,6 +87,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
 
             public void onClick (View v)
             {
+                spin.setVisibility(View.VISIBLE);
                 String search_text = search_f.getText().toString();
                 list.clear();
                 bikes_links.clear();
@@ -131,6 +136,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                             }
                             runOnUiThread(new Runnable() {
                                 public void run() {
+                                    spin.setVisibility(View.GONE);
                                     adapter.notifyDataSetChanged();
                                 }
                             });
