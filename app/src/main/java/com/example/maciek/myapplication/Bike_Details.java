@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -96,7 +97,6 @@ public class Bike_Details extends AppCompatActivity {
                                 byte [] bikeImage = image;
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bikeImage,0,bikeImage.length);
                                 b_image.setImageBitmap(bitmap);
-                                Toast.makeText(getBaseContext(), "username + id" + id + " "+ username, Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -190,5 +190,15 @@ public class Bike_Details extends AppCompatActivity {
 
 
 
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent k = new Intent(Bike_Details.this, View_My_Bikes.class);
+            k.putExtra("Name", username.toString());
+            startActivity(k);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

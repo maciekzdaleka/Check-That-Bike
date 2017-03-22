@@ -1,5 +1,6 @@
 package com.example.maciek.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,10 +58,24 @@ public class Stolen_Bike_Details extends AppCompatActivity {
             public void onClick (View v)
             {
                 Intent k = new Intent(Stolen_Bike_Details.this, Reoprt.class);
+                b_image.buildDrawingCache();
+                Bitmap image = b_image.getDrawingCache();
+                Bundle extras = new Bundle();
+                extras.putParcelable("imagebitmap", image);
+                //k.putExtras(extras);
                 k.putExtra("Name", username.toString());
                 k.putExtra("Bike_id", id);
+                k.putExtra("Bike_make", b_make.getText());
+                k.putExtra("Bike_model", b_model.getText());
+                k.putExtra("Bike_frame", b_frame.getText());
+                k.putExtra("Bike_des", b_des.getText());
+                k.putExtra("Bike_location", b_t_desc.getText());
+                k.putExtra("Bike_date", t_date.getText());
+                k.putExtra("Bike_add", t_add.getText());
+                k.putExtra("Bike_type", sbt.getText());
                 startActivity(k);
                 finish();
+
             }
         });
 
@@ -141,4 +156,6 @@ public class Stolen_Bike_Details extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
 }

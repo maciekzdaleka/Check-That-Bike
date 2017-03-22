@@ -1,216 +1,73 @@
 package com.example.maciek.myapplication;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Environment;
+
 import android.os.Bundle;
-import android.view.LayoutInflater;
+
+
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import static com.example.maciek.myapplication.R.id.time;
+import static com.google.android.gms.wearable.DataMap.TAG;
 
-public class Reoprt extends Fragment {
 
+public class Reoprt extends Activity {
+
+    String username;
     TextView name,email,number,address,city,county,make,model,frame,type,desc,location,date,info;
     ImageView image1;
     Button generate;
-    String username;
+    byte [] pdfimage;
     int id;
-    View mRootView;
-
-    public Reoprt() {
-        // Required empty public constructor
-    }
-
-    public static Reoprt newInstance(){
-        Reoprt fragment = new Reoprt();
-        return fragment;
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.activity_reoprt, container, false);
-        name = (TextView) mRootView.findViewById(R.id.name);
-        email = (TextView) mRootView.findViewById(R.id.email);
-        number = (TextView) mRootView.findViewById(R.id.phone);
-        address = (TextView) mRootView.findViewById(R.id.address);
-        city = (TextView) mRootView.findViewById(R.id.city);
-        county = (TextView) mRootView.findViewById(R.id.county);
-        make = (TextView) mRootView.findViewById(R.id.make);
-        model = (TextView) mRootView.findViewById(R.id.model);
-        frame = (TextView) mRootView.findViewById(R.id.frame);
-        type = (TextView) mRootView.findViewById(R.id.type);
-        desc = (TextView) mRootView.findViewById(R.id.description);
-        location = (TextView) mRootView.findViewById(R.id.location);
-        date = (TextView) mRootView.findViewById(R.id.date);
-        info = (TextView) mRootView.findViewById(R.id.info);
-        image1 = (ImageView) mRootView.findViewById(R.id.imageView4);
-        generate = (Button) mRootView.findViewById(R.id.button5);
-        return mRootView;
-
-        class AsyncTaskRunner extends AsyncTask<String, String, String> {
-
-            private String resp;
-            ProgressDialog progressDialog;
-
-            @Override
-            protected String doInBackground(String... params) {
-                publishProgress("Working"); // Calls onProgressUpdate()
-                try {
-                    PreparedStatement st = null;
-                    Class.forName("com.mysql.jdbc.Driver");
-                    String url = "jdbc:mysql://178.62.50.210:3306/bikes";
-                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, make, image, model, frame_no, description, theft_place, bike_type , theft_date ,theft_info from user_bikes where username=? and bike_id=?";
-                    st = c.prepareStatement(sql);
-                    st.setString(1, username);
-                    st.setInt(2, id);
-                    ResultSet rs = st.executeQuery();
-
-                    while(rs.next())
-                    {
-                        int idddd = rs.getInt("bike_id");
-                        String makee = rs.getString("make");
-                        Blob blob = rs.getBlob("image");
-                        String modell = rs.getString("model");
-                        String framee = rs.getString("frame_no");
-                        String des = rs.getString("description");
-                        String t = rs.getString("theft_place");
-                        String bt = rs.getString("bike_type");
-                        String td = rs.getString("theft_date");
-                        String ta = rs.getString("theft_info");
-                        int blobLength = (int) blob.length();
-                        byte[] image = blob.getBytes(1, blobLength);
-                        blob.free();
-
-                    }
-                    st.close();
-                    c.close();
+    File myFilee;
+    private Image bgImage;
 
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    resp = e.getMessage();
-                }
-                return resp;
-            }
-
-
-            @Override
-            protected void onPostExecute(String result) {
-                // execution of result of Long time consuming operation
-                make.setText("Make: " + makee);
-                model.setText("Model: " + modell);
-                frame.setText("Frame Number: " + framee);
-                desc.setText("Description: " + des);
-                location.setText("Theft Location: " + t);
-                date.setText("Theft Date: " + td);
-                info.setText("Theft Additional Info: " + ta);
-                type.setText("Bike Type: "+bt);
-                byte [] bikeImage = image;
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bikeImage,0,bikeImage.length);
-                image1.setImageBitmap(bitmap);
-                progressDialog.dismiss();
-
-            }
-
-
-            @Override
-            protected void onPreExecute() {
-
-            }
-
-
-            @Override
-            protected void onProgressUpdate(String... text) {
-
-
-            }
-        }
-
-        new Thread(new Runnable(){
-
-            public void run()
-            {
-                try
-                {
-                    PreparedStatement st = null;
-                    Class.forName("com.mysql.jdbc.Driver");
-                    String url = "jdbc:mysql://178.62.50.210:3306/bikes";
-                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, make, image, model, frame_no, description, theft_place, bike_type , theft_date ,theft_info from user_bikes where username=? and bike_id=?";
-                    st = c.prepareStatement(sql);
-                    st.setString(1, username);
-                    st.setInt(2, id);
-                    ResultSet rs = st.executeQuery();
-
-
-                    while(rs.next())
-                    {
-                        int idddd = rs.getInt("bike_id");
-                        String makee = rs.getString("make");
-                        Blob blob = rs.getBlob("image");
-                        String modell = rs.getString("model");
-                        String framee = rs.getString("frame_no");
-                        String des = rs.getString("description");
-                        String t = rs.getString("theft_place");
-                        String bt = rs.getString("bike_type");
-                        String td = rs.getString("theft_date");
-                        String ta = rs.getString("theft_info");
-                        int blobLength = (int) blob.length();
-                        byte[] image = blob.getBytes(1, blobLength);
-                        blob.free();
-
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                make.setText("Make: " + makee);
-                                model.setText("Model: " + modell);
-                                frame.setText("Frame Number: " + framee);
-                                desc.setText("Description: " + des);
-                                location.setText("Theft Location: " + t);
-                                date.setText("Theft Date: " + td);
-                                info.setText("Theft Additional Info: " + ta);
-                                type.setText("Bike Type: "+bt);
-                                byte [] bikeImage = image;
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(bikeImage,0,bikeImage.length);
-                                image1.setImageBitmap(bitmap);
-                            }
-                        });
-
-
-                    }
-                    st.close();
-                    c.close();
-                }
-                catch (ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();
-    }
-
-    /*@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reoprt);
@@ -241,6 +98,24 @@ public class Reoprt extends Fragment {
         image1 = (ImageView) findViewById(R.id.imageView4);
         generate = (Button) findViewById(R.id.button5);
 
+
+
+        AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("What do you want to do? ");
+        builder.setPositiveButton("View & Email Report", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                viewPdf();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+
         new Thread(new Runnable(){
 
             public void run()
@@ -272,6 +147,7 @@ public class Reoprt extends Fragment {
                         String ta = rs.getString("theft_info");
                         int blobLength = (int) blob.length();
                         byte[] image = blob.getBytes(1, blobLength);
+                        pdfimage = blob.getBytes(1, blobLength);
                         blob.free();
 
                         runOnUiThread(new Runnable() {
@@ -305,24 +181,21 @@ public class Reoprt extends Fragment {
 
         }).start();
 
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
 
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     PreparedStatement st = null;
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
-                    Connection c = DriverManager.getConnection(url,"maciek","maciek93");
+                    Connection c = DriverManager.getConnection(url, "maciek", "maciek93");
                     String sql = "select first_name, surname, email, telephone, street,town,county from user where username=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, username);
                     ResultSet rs = st.executeQuery();
 
 
-                    while(rs.next())
-                    {
+                    while (rs.next()) {
                         String first = rs.getString("first_name");
                         String surname = rs.getString("surname");
                         String emaill = rs.getString("email");
@@ -347,18 +220,146 @@ public class Reoprt extends Fragment {
                     }
                     st.close();
                     c.close();
-                }
-                catch (ClassNotFoundException e)
-                {
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
 
-        }).start();*/
+        }).start();
+
+        generate.setOnClickListener(new View.OnClickListener(){
+
+            public void onClick (View v)
+            {
+
+
+                try {
+                    createPdf();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
+
+                builder.show();
+            }
+        });
+
 
 
 
     }
+
+    private void viewPdf(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(myFilee), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
+
+    private void emailNote()
+    {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_SUBJECT,"PDF");
+        email.putExtra(Intent.EXTRA_TEXT, "Report");
+        Uri uri = Uri.parse(myFilee.getAbsolutePath());
+        email.putExtra(Intent.EXTRA_STREAM, uri);
+        email.setType("message/rfc822");
+        startActivity(email);
+    }
+
+    private void createPdf() throws FileNotFoundException, DocumentException {
+
+        File pdfFolder = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), "pdfdemo");
+        if (!pdfFolder.exists()) {
+            pdfFolder.mkdir();
+        }
+
+        //Create time stamp
+        Date datee = new Date() ;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(datee);
+
+        myFilee = new File(pdfFolder + timeStamp + ".pdf");
+        String owner_name = name.getText().toString();
+        String owner_email = email.getText().toString();
+        String owner_number = number.getText().toString();
+        String owner_address = address.getText().toString();
+        String owner_town = city.getText().toString();
+        String owner_county = county.getText().toString();
+        String owner_bike_make = make.getText().toString();
+        String owner_bike_model = model.getText().toString();
+        String owner_bike_frame = frame.getText().toString();
+        String owner_bike_type = type.getText().toString();
+        String owner_bike_desc = desc.getText().toString();
+        String owner_bike_location = location.getText().toString();
+        String owner_bike_date = date.getText().toString();
+        String owner_bike_info = info.getText().toString();
+        Bitmap bmp = ((BitmapDrawable) image1.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+
+
+        OutputStream output = new FileOutputStream(myFilee);
+        Document document = new Document();
+        PdfWriter.getInstance(document, output);
+        document.open();
+        Font normal = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+        Font bold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font title = new Font(Font.FontFamily.TIMES_ROMAN, 30, Font.BOLD
+                | Font.UNDERLINE, BaseColor.GRAY);
+
+        Paragraph tittle = new Paragraph();
+        tittle.setFont(title);
+        tittle.add("Bike Theft Report");
+        tittle.setAlignment(Element.ALIGN_CENTER);
+        document.add(tittle);
+
+        Paragraph name = new Paragraph();
+        name.setFont(bold);
+        name.add("\nName: " + owner_name);
+        name.add("\nEmail: " + owner_email);
+        name.add("\nNumber: " + owner_number);
+        name.add("\nAddress: " + owner_address);
+        name.add("\nCity: " + owner_town);
+        name.add("\nCounty: " + owner_county);
+        name.add("\n\n\n\n");
+        document.add(name);
+
+        Paragraph bike = new Paragraph();
+        bike.setFont(bold);
+        bike.add("\n" + owner_bike_make);
+        bike.add("\n" + owner_bike_model);
+        bike.add("\n" + owner_bike_frame);
+        bike.add("\n" + owner_bike_type);
+        bike.add("\n" + owner_bike_desc);
+        bike.add("\n" + owner_bike_location);
+        bike.add("\n" + owner_bike_date);
+        bike.add("\n" + owner_bike_info);
+        bike.add("\n\n\n\n");
+        document.add(bike);
+        try {
+            Image image = Image.getInstance(stream.toByteArray());
+            image.scaleAbsolute(500f, 300f);
+            document.add(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        //Step 5: Close the document
+        document.close();
+        Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
 }

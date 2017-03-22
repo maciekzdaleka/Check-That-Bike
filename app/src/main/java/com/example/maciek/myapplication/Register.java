@@ -3,6 +3,7 @@ package com.example.maciek.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,9 +36,9 @@ public class Register extends AppCompatActivity {
         street = (EditText) findViewById(R.id.street);
         town = (EditText) findViewById(R.id.town);
         county = (EditText) findViewById(R.id.county);
-
         back = (Button) findViewById(R.id.back);
         register = (Button) findViewById(R.id.register);
+
 
         back.setOnClickListener(new View.OnClickListener(){
 
@@ -53,21 +54,6 @@ public class Register extends AppCompatActivity {
 
             public void onClick (View v)
             {
-                String user = username.getText().toString();
-                String pass= password.getText().toString();
-                String pass2 = password2.getText().toString();
-                String emaill = email.getText().toString();
-                String fname= first_name.getText().toString();
-                String sur = surname.getText().toString();
-                String tele = phone.getText().toString();
-                String ulica = street.getText().toString();
-                String miasto = town.getText().toString();
-                String woje = county.getText().toString();
-
-                //Intent k = new Intent(Register.this, Menu.class);
-                //startActivity(k);
-                //finish();
-
                 new Thread(new Runnable(){
 
                     public void run()
@@ -107,52 +93,44 @@ public class Register extends AppCompatActivity {
                     {
                         u = rs.getString("username");
                     }
-                    if(u == null)
+                    if(u != null && user.equals(u))
                     {
-                        u = "hahah";
-                    }
-                    if(!pass.equals(pass2)&& pass != null)
-                    {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-
-                                Toast.makeText(getBaseContext(), "Passwords don't match! Try again!", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                    else if(u.equals(user) && user != null)
-                    {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-
-                                Toast.makeText(getBaseContext(), "User already existt! " + u, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        Toast.makeText(getBaseContext(), "User " + u + " already exist! Try different username!" , Toast.LENGTH_LONG).show();
                     }
                     else
                     {
-                        String inss = "insert into user values (?,?,?,?,?,?,?,?,?)";
-                        st2 = c.prepareStatement(inss);
-                        st2.setString(1,user);
-                        st2.setString(2,pass);
-                        st2.setString(3,fname);
-                        st2.setString(4,sur);
-                        st2.setString(5,emaill);
-                        st2.setString(6,tele);
-                        st2.setString(7,ulica);
-                        st2.setString(8,miasto);
-                        st2.setString(9,woje);
-                        st2.execute();
-                        st2.close();
-                        runOnUiThread(new Runnable() {
-                            public void run() {
+                        if(pass != null && !pass.equals(pass2) && pass == " ")
+                        {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
 
-                                Toast.makeText(getBaseContext(), "User Created! ", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                                    Toast.makeText(getBaseContext(), "Passwords don't match! Try again!", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            String inss = "insert into user values (?,?,?,?,?,?,?,?,?)";
+                            st2 = c.prepareStatement(inss);
+                            st2.setString(1,user);
+                            st2.setString(2,pass);
+                            st2.setString(3,fname);
+                            st2.setString(4,sur);
+                            st2.setString(5,emaill);
+                            st2.setString(6,tele);
+                            st2.setString(7,ulica);
+                            st2.setString(8,miasto);
+                            st2.setString(9,woje);
+                            st2.execute();
+                            st2.close();
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+
+                                    Toast.makeText(getBaseContext(), "User Created! ", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }
-
-
                     st.close();
                     c.close();
                 }
@@ -166,6 +144,15 @@ public class Register extends AppCompatActivity {
             }
 
         });
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent k = new Intent(Register.this, Login.class);
+            startActivity(k);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

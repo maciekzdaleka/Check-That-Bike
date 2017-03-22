@@ -1,10 +1,16 @@
 package com.example.maciek.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,12 +51,15 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_check_adverts);
 
 
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
         if(bundle != null)
         {
             username = bundle.getString("Name");
+            bike_type2 = bundle.getString("bike_type");
+
         }
         search_f = (EditText) findViewById(R.id.search_field);
         search_button = (Button) findViewById(R.id.search);
@@ -73,6 +82,9 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
         bike_type.add("Kids");
         bike_type.add("Ladies");
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(search_f.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, bike_type);
 
@@ -88,6 +100,8 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
             public void onClick (View v)
             {
                 spin.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 String search_text = search_f.getText().toString();
                 list.clear();
                 bikes_links.clear();
@@ -110,7 +124,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                             }
                             else
                             {
-                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ? ;";
+                                String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ?;";
                                 st = c.prepareStatement(sql);
                                 st.setString(1, "%" + search_text  + "%");
                                 st.setString(2, "%" + bike_type2  + "%");
@@ -137,6 +151,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     spin.setVisibility(View.GONE);
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     adapter.notifyDataSetChanged();
                                 }
                             });
@@ -162,6 +177,8 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                 Intent k = new Intent(Check_Adverts.this, view_advert.class);
                 k.putExtra("Name", username.toString());
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
+                k.putExtra("search",(bikes_links.get(itemId)));
+                k.putExtra("bike_type",(bike_type2));
                 startActivity(k);
                 finish();
             }
@@ -170,6 +187,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
 
 
     }
+
 
 
 
@@ -222,5 +240,29 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         bike_type2 = "normal";
+    }
+
+    protected void setupParent(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard();
+                    return false;
+                }
+            });
+        }
+        //If a layout container, iterate over children
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupParent(innerView);
+            }
+        }
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 }

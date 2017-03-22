@@ -1,12 +1,20 @@
 package com.example.maciek.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 public class Menu extends AppCompatActivity {
@@ -77,5 +85,34 @@ public class Menu extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+    }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Do you want to log out ?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Intent k = new Intent(Menu.this, Login.class);
+                    startActivity(k);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

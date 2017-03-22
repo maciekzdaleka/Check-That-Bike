@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">Check That Bike</string>
+    <string name="app_name">Mind My Bike</string>
     <string name="title_activity_menu">Menu</string>
     <string name="title_activity_addd">Addd</string>
     <string name="title_activity_garda__stations">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
