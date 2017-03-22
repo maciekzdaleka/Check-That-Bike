@@ -11,80 +11,118 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.maciek.myapplication.Stolen_Bike_Details">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="19dp"
-        android:id="@+id/bike_name"
-        android:textStyle="normal|bold"
-        android:textSize="20sp" />
-
-    <TextView
-        android:text="Make: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bike_name"
-        android:layout_alignStart="@+id/bike_name"
-        android:layout_marginTop="14dp"
-        android:id="@+id/bike_make" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bike_make"
-        android:layout_alignStart="@+id/bike_make"
-        android:layout_marginTop="12dp"
-        android:id="@+id/bike_model" />
-
-    <TextView
-        android:text="Frame Number:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bike_model"
-        android:layout_alignStart="@+id/bike_model"
-        android:layout_marginTop="16dp"
-        android:id="@+id/bike_frame" />
-
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:srcCompat="@android:drawable/ic_menu_report_image"
         android:id="@+id/imageView2"
-        android:layout_marginBottom="37dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:srcCompat="@android:drawable/ic_menu_report_image"
+        android:layout_above="@+id/report_button"
+        android:layout_alignParentStart="true" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/imageView2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bike_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/bike_make"
+                android:layout_below="@+id/bike_make"
+                android:layout_marginTop="15dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/bike_make"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/bike_name"
+                android:layout_below="@+id/bike_name"
+                android:layout_marginTop="14dp"
+                android:text="Make: " />
+
+            <TextView
+                android:id="@+id/theft_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/t_description"
+                android:layout_below="@+id/t_description"
+                android:layout_marginTop="15dp"
+                android:text="Theft Date:" />
+
+            <TextView
+                android:id="@+id/bike_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="22dp"
+                android:text="TextView"
+                android:textSize="20sp"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:id="@+id/bike_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/bike_model"
+                android:layout_below="@+id/bike_model"
+                android:layout_marginTop="11dp"
+                android:text="Frame Number:" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/stolen_bike_type"
+                android:layout_below="@+id/stolen_bike_type"
+                android:layout_marginTop="13dp"
+                android:text="Description: " />
+
+            <TextView
+                android:id="@+id/theft_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignStart="@+id/theft_date"
+                android:layout_below="@+id/theft_date"
+                android:layout_marginTop="17dp"
+                android:text="Add:" />
+
+            <TextView
+                android:id="@+id/stolen_bike_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/bike_frame"
+                android:layout_below="@+id/bike_frame"
+                android:layout_marginTop="11dp"
+                android:text="Bike type" />
+
+            <TextView
+                android:id="@+id/t_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignStart="@+id/description"
+                android:layout_below="@+id/description"
+                android:layout_marginTop="19dp"
+                android:text="Theft Location: " />
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/report_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:text="Description: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:id="@+id/description"
-        android:layout_below="@+id/stolen_bike_type"
-        android:layout_alignStart="@+id/stolen_bike_type" />
-
-    <TextView
-        android:text="Bike type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stolen_bike_type"
-        android:layout_marginTop="14dp"
-        android:layout_below="@+id/bike_frame"
-        android:layout_alignStart="@+id/bike_frame" />
-
-    <TextView
-        android:text="Theft Location: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/t_description"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/description"
-        android:layout_alignStart="@+id/description" />
+        android:layout_centerHorizontal="true"
+        android:text="Generate Report" />
 
 </RelativeLayout>

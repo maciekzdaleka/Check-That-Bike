@@ -135,9 +135,9 @@ public class Register extends AppCompatActivity {
                         st2 = c.prepareStatement(inss);
                         st2.setString(1,user);
                         st2.setString(2,pass);
-                        st2.setString(3,emaill);
-                        st2.setString(4,fname);
-                        st2.setString(5,sur);
+                        st2.setString(3,fname);
+                        st2.setString(4,sur);
+                        st2.setString(5,emaill);
                         st2.setString(6,tele);
                         st2.setString(7,ulica);
                         st2.setString(8,miasto);
@@ -167,4 +167,5 @@ public class Register extends AppCompatActivity {
 
         });
     }
+
 }
