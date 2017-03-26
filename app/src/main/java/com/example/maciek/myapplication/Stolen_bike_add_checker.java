@@ -141,6 +141,7 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                 k.putExtra("bike_model", model);
                 k.putExtra("bike_type", bike_type);
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
+                k.putExtra("choice", 2);
                 startActivity(k);
                 finish();
             }

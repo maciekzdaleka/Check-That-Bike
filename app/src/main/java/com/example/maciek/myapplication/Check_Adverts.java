@@ -179,6 +179,7 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
                 k.putExtra("search",(bikes_links.get(itemId)));
                 k.putExtra("bike_type",(bike_type2));
+                k.putExtra("choice", 1 );
                 startActivity(k);
                 finish();
             }
