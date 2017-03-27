@@ -35,7 +35,7 @@ android {
 }
 
 repositories {
-    flatDir{
+    flatDir {
         dirs 'libs'
     }
 }
@@ -45,17 +45,19 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.itextpdf:itextg:5.5.10'
     // testCompile 'junit:junit:4.12'
     compile('com.google.api-client:google-api-client-android:1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    compile 'com.itextpdf:itextg:5.5.10'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
+    compile 'com.google.android.gms:play-services-maps:10.2.0'
 }
+
 
 
 

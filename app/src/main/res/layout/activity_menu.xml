@@ -46,4 +46,14 @@
         android:layout_marginTop="24dp"
         android:id="@+id/checkadverts" />
 
+    <Button
+        android:id="@+id/black_spots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/checkadverts"
+        android:layout_marginTop="28dp"
+        android:text='View "Black Spots"' />
+
 </RelativeLayout>

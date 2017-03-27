@@ -20,7 +20,7 @@ import java.sql.SQLException;
 public class Menu extends AppCompatActivity {
 
     String username;
-    Button view_my_bikes, check_garda, view_stolen,adverts;
+    Button view_my_bikes, check_garda, view_stolen,adverts,blackspots;
 
 
 
@@ -41,6 +41,7 @@ public class Menu extends AppCompatActivity {
         check_garda = (Button) findViewById(R.id.check_garda);
         view_stolen = (Button) findViewById(R.id.viewstolenbikes);
         adverts = (Button) findViewById(R.id.checkadverts);
+        blackspots = (Button) findViewById(R.id.black_spots);
 
         view_my_bikes.setOnClickListener(new View.OnClickListener(){
 
@@ -80,6 +81,17 @@ public class Menu extends AppCompatActivity {
             public void onClick (View v)
             {
                 Intent k = new Intent(Menu.this, Check_Adverts.class);
+                k.putExtra("Name", username.toString());
+                startActivity(k);
+                finish();
+            }
+        });
+
+        blackspots.setOnClickListener(new View.OnClickListener(){
+
+            public void onClick (View v)
+            {
+                Intent k = new Intent(Menu.this, BlackSpots.class);
                 k.putExtra("Name", username.toString());
                 startActivity(k);
                 finish();
