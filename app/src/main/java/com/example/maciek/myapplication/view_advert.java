@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class view_advert extends AppCompatActivity {
     String username,advert_link,model,make,bike_type;
     private WebView ad;
-    int choice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,6 @@ public class view_advert extends AppCompatActivity {
             model = bundle.getString("bike_model");
             make = bundle.getString("bike_make");
             bike_type = bundle.getString("bike_type");
-            choice = bundle.getInt("choice");
 
         }
         ad = (WebView) findViewById(R.id.advert_view);
@@ -51,23 +49,14 @@ public class view_advert extends AppCompatActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if(choice == 2 ) {
-                Intent k = new Intent(view_advert.this, Stolen_bike_add_checker.class);
-                k.putExtra("Name", username.toString());
-                k.putExtra("Name", username);
-                k.putExtra("bike_make", make);
-                k.putExtra("bike_model", model);
-                k.putExtra("bike_type", bike_type);
-                startActivity(k);
-                finish();
-            }
-            else
-            {
-                Intent k = new Intent(view_advert.this, Check_Adverts.class);
-                k.putExtra("Name", username.toString());
-                startActivity(k);
-                finish();
-            }
+            Intent k = new Intent(view_advert.this, Stolen_bike_add_checker.class);
+            k.putExtra("Name", username.toString());
+            k.putExtra("Name", username);
+            k.putExtra("bike_make", make);
+            k.putExtra("bike_model", model);
+            k.putExtra("bike_type", bike_type);
+            startActivity(k);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
