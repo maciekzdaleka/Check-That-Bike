@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -356,8 +357,18 @@ public class Reoprt extends Activity {
 
         //Step 5: Close the document
         document.close();
-        Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
 
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent k = new Intent(Reoprt.this, Stolen_Bike_Details.class);
+            k.putExtra("Name", username.toString());
+            startActivity(k);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 

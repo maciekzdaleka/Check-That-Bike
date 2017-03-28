@@ -1,44 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.example.maciek.myapplication">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.maciek.myapplication">
 
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-<!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-<application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
-    android:supportsRtl="true" android:theme="@style/AppTheme">
-    <activity android:name=".Login">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity android:name=".Register" />
-    <activity android:name=".Menu" />
-    <activity android:name=".View_My_Bikes" />
-    <activity android:name=".Add_New_Bike" />
-    <activity android:name=".Bike_Details" />
-    <activity android:name=".View_My_Stolen_Bikes" />
-    <activity android:name=".Stolen_Bike_Details" />
-    <activity android:name=".Check_Adverts" />
-    <activity android:name=".view_advert" />
-    <activity android:name=".Stolen_bike_add_checker" />
-    <activity android:name=".Theft_details" />
-    <activity android:name=".BlackSpots"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Register" />
+        <activity android:name=".Menu" />
+        <activity android:name=".View_My_Bikes" />
+        <activity android:name=".Add_New_Bike" />
+        <activity android:name=".Bike_Details" />
+        <activity android:name=".View_My_Stolen_Bikes" />
+        <activity android:name=".Stolen_Bike_Details" />
+        <activity android:name=".Check_Adverts" />
+        <activity android:name=".view_advert" />
+        <activity android:name=".Stolen_bike_add_checker" />
+        <activity android:name=".Theft_details" />
 
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDe3i2Hr7YBDrjxgZrTvN2gio_YRQYYxqQ" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDe3i2Hr7YBDrjxgZrTvN2gio_YRQYYxqQ" />
 
-    <activity android:name=".Reoprt"></activity>
-</application>
+        <activity android:name=".Reoprt" />
+        <activity android:name=".BlackSpots"></activity>
+    </application>
 
 </manifest>
