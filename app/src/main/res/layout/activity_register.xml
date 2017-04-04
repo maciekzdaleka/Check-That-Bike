@@ -21,14 +21,14 @@
         android:hint="Retype password" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/password"
-        android:hint="password"
+        android:layout_alignStart="@+id/username"
         android:layout_below="@+id/username"
-        android:layout_alignStart="@+id/username" />
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -41,54 +41,54 @@
         android:hint="Surname" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:layout_below="@+id/surname"
-        android:layout_alignEnd="@+id/surname"
         android:id="@+id/phone"
-        android:hint="phone" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_alignEnd="@+id/surname"
+        android:layout_below="@+id/surname"
         android:ems="10"
-        android:layout_below="@+id/street"
-        android:layout_alignStart="@+id/street"
+        android:hint="Phone"
+        android:inputType="phone" />
+
+    <EditText
         android:id="@+id/town"
-        android:hint="town" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_alignStart="@+id/street"
+        android:layout_below="@+id/street"
         android:ems="10"
-        android:layout_below="@+id/town"
-        android:layout_alignStart="@+id/town"
+        android:hint="Town"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/county"
-        android:hint="county" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_alignStart="@+id/town"
+        android:layout_below="@+id/town"
         android:ems="10"
+        android:hint="County"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/street"
-        android:layout_below="@+id/phone"
-        android:layout_alignStart="@+id/phone"
-        android:hint="street" />
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:layout_alignStart="@+id/phone"
+        android:layout_below="@+id/phone"
         android:ems="10"
+        android:hint="Street "
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/email"
-        android:layout_below="@+id/password2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignStart="@+id/password2"
-        android:hint="email" />
+        android:layout_below="@+id/password2"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -101,14 +101,14 @@
         android:layout_alignStart="@+id/email" />
 
     <EditText
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/username"
-        android:hint="username"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName" />
 
     <Button
         android:text="Back"
