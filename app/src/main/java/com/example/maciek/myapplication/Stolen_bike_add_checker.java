@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class Stolen_bike_add_checker extends AppCompatActivity {
 
-    String username,model,make,bike_type;
+    String username,model,make,bike_type,description;
     byte[] image;
     static ArrayList<String> bikes_links = new ArrayList<String>();
     ListView listView;
@@ -45,10 +45,10 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
         if(bundle != null)
         {
             username = bundle.getString("Name");
-            //image = bundle.getByteArray("bike_image");
             model = bundle.getString("bike_model");
             make = bundle.getString("bike_make");
             bike_type = bundle.getString("bike_type");
+            description = bundle.getString("bike_des");
         }
         listView = (ListView) findViewById(R.id.listview4);
         list = new ArrayList<>();
@@ -56,8 +56,6 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
         listView.setAdapter(adapter);
         spin=(ProgressBar)findViewById(R.id.progressBar3);
         spin.setVisibility(View.VISIBLE);
-
-        Toast.makeText(getBaseContext(), "Username: "+username+ " | " + "Model: "+model+ " | " + "Make: "+make+ " | " + "Type: "+bike_type+ " | " , Toast.LENGTH_LONG).show();
 
         list.clear();
         bikes_links.clear();
@@ -73,27 +71,11 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    if(bike_type.equals("unknown"))
-                    {
-                        String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? or title like ? ;";
-                        st = c.prepareStatement(sql);
-                        st.setString(1, "%" + make  + "%");
-                        st.setString(2, "%" + model  + "%");
-                   }
-                   else
-                   {
+                    String sql = "SELECT *, jaro_winkler_similarity(`bike_des`, ?) AS score FROM scrapedbikes where title like ? ORDER BY `score`  DESC LIMIT 10;";
+                    st = c.prepareStatement(sql);
+                    st.setString(1,  "'" + description + "'");
+                    st.setString(2, "%" + make  +  "%");
 
-                        String sql = "select bike_id, title, image_link, advert_link, bike_type from scrapedbikes where title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ? or title LIKE ? and bike_type like ?;";
-                        st = c.prepareStatement(sql);
-                        st.setString(1, "%" + make  + "%");
-                        st.setString(2, "%" + bike_type  + "%");
-                        st.setString(3, "%" + make  + "%");
-                        st.setString(4, "%" + unknown + "%");
-                        st.setString(5, "%" + model  + "%");
-                        st.setString(6, "%" + bike_type  + "%");
-                        st.setString(7, "%" + model  + "%");
-                        st.setString(8, "%" + unknown + "%");
-                   }
                     ResultSet rs = st.executeQuery();
 
 

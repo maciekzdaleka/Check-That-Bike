@@ -234,8 +234,6 @@ public class Reoprt extends Activity {
 
             public void onClick (View v)
             {
-
-
                 try {
                     createPdf();
                 } catch (FileNotFoundException e) {
@@ -243,8 +241,6 @@ public class Reoprt extends Activity {
                 } catch (DocumentException e) {
                     e.printStackTrace();
                 }
-
-                Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
 
                 builder.show();
             }
@@ -353,11 +349,8 @@ public class Reoprt extends Activity {
             e.printStackTrace();
         }
 
-
-
-        //Step 5: Close the document
         document.close();
-       // Toast.makeText(Reoprt.this, "PDF File is Created. Location : " + myFilee, Toast.LENGTH_SHORT).show();
+
 
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {

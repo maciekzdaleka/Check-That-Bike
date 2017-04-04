@@ -26,12 +26,13 @@ import java.util.ArrayList;
 public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     Integer id2;
-    String username,model,make,bike_type;
+    String username,model,make,bike_type,description;
     byte [] bikeimagebyte;
     static ArrayList<Integer> bikesId = new ArrayList<Integer>();
     static ArrayList<String> bikesmodel = new ArrayList<String>();
     static ArrayList<String> bikesmake = new ArrayList<String>();
     static ArrayList<String> bikestype= new ArrayList<String>();
+    static ArrayList<String> bikesdes = new ArrayList<String>();
     static ArrayList<byte []> bikesimage= new ArrayList<byte []>();
     ListView listView;
     ArrayList<Bike> list;
@@ -72,7 +73,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     Class.forName("com.mysql.jdbc.Driver");
                     String url = "jdbc:mysql://178.62.50.210:3306/bikes";
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
-                    String sql = "select bike_id, bike_name, make, image, model, frame_no, bike_type from user_bikes where username=? and stolen=?";
+                    String sql = "select bike_id, bike_name, make, image, model, frame_no, bike_type ,description from user_bikes where username=? and stolen=?";
                     st = c.prepareStatement(sql);
                     st.setString(1, username);
                     st.setString(2, "yes");
@@ -95,6 +96,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                         bikesmake.add(rs.getString("make"));
                         bikestype.add(rs.getString("bike_type"));
                         bikesId.add(rs.getInt("bike_id"));
+                        bikesdes.add(rs.getString("description"));
                         blob.free();
                         list.add(new Bike(id, name, make, model, frame, des, image));
                     }
@@ -185,7 +187,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                 k.putExtra("bike_make", make);
                 k.putExtra("bike_model", model);
                 k.putExtra("bike_type", bike_type);
-                //.putExtra("bike_image", bikeimagebyte);
+                k.putExtra("bike_des", description);
                 startActivity(k);
                 finish();
             }
@@ -201,6 +203,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
             model = bikesmodel.get(itemId);
             bike_type = bikestype.get(itemId);
             bikeimagebyte = bikesimage.get(itemId);
+            description = bikesdes.get(itemId);
             builder.show();
             return true;
         }
