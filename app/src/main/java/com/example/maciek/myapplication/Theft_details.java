@@ -132,7 +132,7 @@ public class Theft_details extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             spin.setVisibility(View.GONE);
-                            Toast.makeText(getBaseContext(), "Marked As Stolen. Check Stolen Bikes Section !", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "Marked As Stolen. Check View My Stolen Bikes Section !", Toast.LENGTH_LONG).show();
                         }
                     });
 

@@ -33,7 +33,6 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
     static ArrayList<String> bikesmake = new ArrayList<String>();
     static ArrayList<String> bikestype= new ArrayList<String>();
     static ArrayList<String> bikesdes = new ArrayList<String>();
-    static ArrayList<byte []> bikesimage= new ArrayList<byte []>();
     ListView listView;
     ArrayList<Bike> list;
     BikeListAdapter adapter = null;
@@ -49,7 +48,6 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
         bikesmodel.clear();
         bikesmake.clear();
         bikestype.clear();
-        bikesimage.clear();
         if(bundle != null)
         {
             username = bundle.getString("Name");
@@ -91,12 +89,13 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                         String des = rs.getString("bike_type");
                         int blobLength = (int) blob.length();
                         byte[] image = blob.getBytes(1, blobLength);
-                        bikesimage.add(image);
+
                         bikesmodel.add(rs.getString("model"));
                         bikesmake.add(rs.getString("make"));
                         bikestype.add(rs.getString("bike_type"));
                         bikesId.add(rs.getInt("bike_id"));
                         bikesdes.add(rs.getString("description"));
+
                         blob.free();
                         list.add(new Bike(id, name, make, model, frame, des, image));
                     }
@@ -135,6 +134,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     }
 
                 }).start();
+                list.clear();
                 startActivity(k);
                 finish();
             }
@@ -155,6 +155,7 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(getBaseContext(), "Bike deleted !", Toast.LENGTH_LONG).show();
+
                         }
                     });
 
@@ -202,7 +203,6 @@ public class View_My_Stolen_Bikes extends AppCompatActivity implements AdapterVi
             make = bikesmake.get(itemId);
             model = bikesmodel.get(itemId);
             bike_type = bikestype.get(itemId);
-            bikeimagebyte = bikesimage.get(itemId);
             description = bikesdes.get(itemId);
             builder.show();
             return true;

@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 import java.util.ArrayList;
 
 public class view_advert extends AppCompatActivity {
-    String username,advert_link,model,make,bike_type;
+    String username,advert_link,model,make,bike_type, description;
     private WebView ad;
     int choice;
 
@@ -31,6 +31,7 @@ public class view_advert extends AppCompatActivity {
             make = bundle.getString("bike_make");
             bike_type = bundle.getString("bike_type");
             choice = bundle.getInt("choice");
+            description = bundle.getString("bike_des");
 
         }
         ad = (WebView) findViewById(R.id.advert_view);
@@ -58,6 +59,7 @@ public class view_advert extends AppCompatActivity {
                 k.putExtra("bike_make", make);
                 k.putExtra("bike_model", model);
                 k.putExtra("bike_type", bike_type);
+                k.putExtra("bike_des", description);
                 startActivity(k);
                 finish();
             }

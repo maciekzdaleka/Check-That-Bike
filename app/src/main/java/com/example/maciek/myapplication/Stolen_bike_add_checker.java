@@ -73,8 +73,9 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                     Connection c = DriverManager.getConnection(url,"maciek","maciek93");
                     String sql = "SELECT *, jaro_winkler_similarity(`bike_des`, ?) AS score FROM scrapedbikes where title like ? ORDER BY `score`  DESC LIMIT 10;";
                     st = c.prepareStatement(sql);
-                    st.setString(1,  "'" + description + "'");
-                    st.setString(2, "%" + make  +  "%");
+                    st.setString(1, "\"" + description + "\"");
+                    st.setString(2, "%" + make + "%");
+                   // st.setString(2, "%" + make + " " + model + "%");
 
                     ResultSet rs = st.executeQuery();
 
@@ -85,7 +86,6 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                         String title = rs.getString("title");
                         URL image_link = rs.getURL("image_link");
                         bikes_links.add(rs.getString("advert_link"));
-                        //String advert_link = rs.getString("advert_link");
                         String advert_link = (" ");
                         String biketype = rs.getString("bike_type");
                         String imagee = " ";
@@ -122,6 +122,7 @@ public class Stolen_bike_add_checker extends AppCompatActivity {
                 k.putExtra("bike_make", make);
                 k.putExtra("bike_model", model);
                 k.putExtra("bike_type", bike_type);
+                k.putExtra("bike_des", description);
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
                 k.putExtra("choice", 2);
                 startActivity(k);

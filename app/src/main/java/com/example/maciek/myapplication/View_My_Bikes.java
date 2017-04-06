@@ -93,7 +93,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                     }
                     runOnUiThread(new Runnable() {
                         public void run() {
-                    adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
                             spin.setVisibility(View.GONE);
                         }
                     });
@@ -160,6 +160,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(getBaseContext(), "Bike deleted !", Toast.LENGTH_LONG).show();
+                            list.clear();
                         }
                     });
 
@@ -188,6 +189,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
                 Intent k = new Intent(View_My_Bikes.this, Theft_details.class);
                 k.putExtra("Name", username.toString());
                 k.putExtra("id", id2);
+                list.clear();
                 startActivity(k);
                 finish();
 
@@ -216,6 +218,7 @@ public class View_My_Bikes extends AppCompatActivity implements AdapterView.OnIt
         k.putExtra("Name", username.toString());
         k.putExtra("Bike_id",(bikesId.get(itemId)));
         startActivity(k);
+        list.clear();
         finish();
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {

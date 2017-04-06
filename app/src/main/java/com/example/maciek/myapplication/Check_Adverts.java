@@ -177,7 +177,6 @@ public class Check_Adverts extends AppCompatActivity implements AdapterView.OnIt
                 Intent k = new Intent(Check_Adverts.this, view_advert.class);
                 k.putExtra("Name", username.toString());
                 k.putExtra("Bike_AD",(bikes_links.get(itemId)));
-                k.putExtra("search",(bikes_links.get(itemId)));
                 k.putExtra("bike_type",(bike_type2));
                 k.putExtra("choice", 1 );
                 startActivity(k);
